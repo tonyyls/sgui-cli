@@ -1,0 +1,30 @@
+{
+  "name": "sgui-cli",
+  "version": "0.1.0",
+  "description": "命令行工具支持个性化启动Swagge-UI",
+  "main": "index.js",
+  "bin": {
+    "sgui": "index.js"
+  },
+  "author": "yulsh",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tonyyls/sgui-cli.git"
+  },
+  "keywords": [
+    "cli"
+  ],
+  "bugs": {
+    "url": "https://github.com/tonyyls/sgui-cli/issues"
+  },
+  "homepage": "https://github.com/tonyyls/sgui-cli",
+  "dependencies": {
+    "chokidar": "^1.7.0",
+    "express": "^4.16.2",
+    "opn": "^5.1.0",
+    "socket.io": "^2.0.4",
+    "socket.io-client": "^2.0.4",
+    "yargs": "^8.0.2"
+  }
+}
