@@ -1,7 +1,7 @@
 {
-  "name": "sgui-cli",
+  "name": "sgui",
   "version": "0.1.0",
-  "description": "命令行工具支持个性化启动Swagge-UI",
+  "description": "命令行工具，用于支持个性化启动Swagger-UI (sg 是 Swagger的缩写)",
   "main": "sgui.js",
   "bin": {
     "sgui": "index.js"
