@@ -29,7 +29,7 @@ sgui run http://localhost:8080/swagger.json -t JMMSTitle --wf /Users/tonyyls/Des
 ```
 
 
-##nodejs中使用
+## nodejs中使用
 
 安装命令
 
@@ -42,7 +42,7 @@ const sgui = require('sgui');
 sgui.launch(options);
 ```
 
-**参数options**
+## 参数
 
 jsonfile: swagger.json地址
 
