@@ -2,7 +2,7 @@
   "name": "sgui-cli",
   "version": "0.1.0",
   "description": "命令行工具支持个性化启动Swagge-UI",
-  "main": "index.js",
+  "main": "sgui.js",
   "bin": {
     "sgui": "index.js"
   },
