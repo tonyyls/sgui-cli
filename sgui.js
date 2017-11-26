@@ -25,7 +25,16 @@ function initServer(argv) {
     app.use('/static', express.static(path.join(__dirname, 'public')));
     app.listen(port, () => {
         console.log(`start to open:${url}`);
-        opn(url, {app: ['google chrome', '--incognito']});
+        let platform = process.platform;
+        let appName;
+        if(platform === "darwin"){
+            appName="google chrome";
+        }else if(platform === "win32"){
+            appName="chrome";
+        }else if(platform === "linux"){
+            appName="google-chrome";
+        }
+        opn(url, {app: [appName]});
     });
 }
 
