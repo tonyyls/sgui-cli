@@ -11,29 +11,41 @@ const defaultSwaggerJSON = "http://petstore.swagger.io/v2/swagger.json";
 const defaultPort = 3000;
 const defaultWatchPort = 2500;
 
-let url;
 //launch server
 function initServer(argv) {
+    //prepare params
     let jsonfile = argv["jsonfile"] || defaultSwaggerJSON;
     let port = argv["port"] || defaultPort;
     let watchPort = argv["watchport"] || defaultWatchPort;
     let title = argv["title"] || defaultTitle;
     let autoOpen = argv["autoOpen"];
 
-    let queryStr = `title=${encodeURIComponent(title)}&jsonfile=${encodeURIComponent(jsonfile)}&watchport=${watchPort}`;
-    url = `http://localhost:${port}/static/index.html?${queryStr}`;
+    //swagger dist and replace content
+    const swaggerUIDir = path.join(__dirname, 'public');
+    const html = fs.readFileSync(path.join(__dirname, 'public/index.html'), {encoding: 'utf-8'})
+        .replace(defaultSwaggerJSON, jsonfile)
+        .replace('<title>Swagger UI</title>', `<title>${title}</title><base href="/">`)
+        .replace('2500', watchPort)
 
-    let app = express();
-    app.use('/static', express.static(path.join(__dirname, 'public')));
+    let url = `http://localhost:${port}`;
+    const app = express();
+    app.use('/', serveSwaggerUi);
+    app.use('/', express.static(swaggerUIDir));
     app.listen(port, () => {
         if (autoOpen) {
-            openBroswer();
+            openBroswer(url);
         }
     });
+    console.log(`\nSuccess started, now you can open the swagger ui at ${url}\n`);
+
+    function serveSwaggerUi(req, res, next) {
+        return /^\/?$/.test(req.path) ? res.status(200).send(html) : next();
+    }
 }
 
-function openBroswer() {
-    let platform = process.platform;
+//open url with Chrome
+function openBroswer(url) {
+    const platform = process.platform;
     let appName;
     if (platform === "darwin") {
         appName = "google chrome";
@@ -65,12 +77,21 @@ function watchFile(argv) {
         ignored: /[\/\\]\./, persistent: true
     });
     watcher.on('change', (path) => {
-        console.log(`Time:${new Date().getTime()} ${path}`);
         socket.emit("filechange", path);
     });
 }
 
 var sgui = {
+    /**
+     * launch swagger ui
+     * @param argv
+     * @param argv.jsonfile  swagger json path
+     * @param argv.port server port default 3000
+     * @param argv.title  swagger ui title
+     * @param argv.autoOpen auto open chrome broswer
+     * @param argv.watchfile watch file to refresh swagger ui
+     * @param argv.watchport watcher server port default 2500
+     */
     launch: (argv) => {
         argv = argv || {};
         initServer(argv);
@@ -79,9 +100,6 @@ var sgui = {
         if (!fs.existsSync(filePath))return;
         initWatcher(argv);
         watchFile(argv);
-    },
-    open: () => {
-        openBroswer();
     }
 }
 module.exports = sgui;
