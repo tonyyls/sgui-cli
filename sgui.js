@@ -11,31 +11,38 @@ const defaultSwaggerJSON = "http://petstore.swagger.io/v2/swagger.json";
 const defaultPort = 3000;
 const defaultWatchPort = 2500;
 
+let url;
 //launch server
 function initServer(argv) {
     let jsonfile = argv["jsonfile"] || defaultSwaggerJSON;
     let port = argv["port"] || defaultPort;
     let watchPort = argv["watchport"] || defaultWatchPort;
     let title = argv["title"] || defaultTitle;
+    let autoOpen = argv["autoOpen"];
 
     let queryStr = `title=${encodeURIComponent(title)}&jsonfile=${encodeURIComponent(jsonfile)}&watchport=${watchPort}`;
-    let url = `http://localhost:${port}/static/index.html?${queryStr}`;
+    url = `http://localhost:${port}/static/index.html?${queryStr}`;
 
     let app = express();
     app.use('/static', express.static(path.join(__dirname, 'public')));
     app.listen(port, () => {
-        console.log(`start to open:${url}`);
-        let platform = process.platform;
-        let appName;
-        if(platform === "darwin"){
-            appName="google chrome";
-        }else if(platform === "win32"){
-            appName="chrome";
-        }else if(platform === "linux"){
-            appName="google-chrome";
+        if (autoOpen) {
+            openBroswer();
         }
-        opn(url, {app: [appName]});
     });
+}
+
+function openBroswer() {
+    let platform = process.platform;
+    let appName;
+    if (platform === "darwin") {
+        appName = "google chrome";
+    } else if (platform === "win32") {
+        appName = "chrome";
+    } else if (platform === "linux") {
+        appName = "google-chrome";
+    }
+    opn(url, {app: [appName]});
 }
 
 //launch watcher
@@ -64,13 +71,17 @@ function watchFile(argv) {
 }
 
 var sgui = {
-    launch: (argv)=>{
+    launch: (argv) => {
+        argv = argv || {};
         initServer(argv);
         let filePath = argv["watchfile"];
         if (!filePath)return;
         if (!fs.existsSync(filePath))return;
         initWatcher(argv);
         watchFile(argv);
+    },
+    open: () => {
+        openBroswer();
     }
 }
 module.exports = sgui;
