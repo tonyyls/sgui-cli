@@ -53,3 +53,5 @@ title: 页面标题文本
 watchfile: 监控的文件路径，该文件发生变化，将会触发页面实时刷新
 
 watchport: 监控服务器端口，默认使用2500
+
+autoOpen: 自动打开Chrome浏览器
