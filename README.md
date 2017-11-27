@@ -1,5 +1,5 @@
 # sgui
-命令行工具，用于支持个性化启动Swagger-UI (sg 是 Swagger的缩写)
+用于支持个性化启动Swagger-UI (sg 是 Swagger的缩写)
 
 ## 命令行使用
 安装命令
@@ -44,12 +44,12 @@ sgui.launch(options);
 
 ## 参数
 
-jsonfile: swagger.json地址
+jsonfile: swagger.json地址，默认使用官方petstore
 
-port: 服务器端口，默认 3000
+port: 服务器端口，默认使用3000
 
 title: 页面标题文本
 
 watchfile: 监控的文件路径，该文件发生变化，将会触发页面实时刷新
 
-watchport: 监控服务器端口，默认 2500
+watchport: 监控服务器端口，默认使用2500
